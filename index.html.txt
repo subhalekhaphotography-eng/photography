@@ -143,4 +143,36 @@ function downloadPDF() {
   doc.setFontSize(14);
   doc.text("Total: ₹" + total, 20, y);
 
-  doc.save("quotati
+  doc.save("quotation-" + invoiceNumber + ".pdf");
+}
+
+function sendWhatsApp() {
+  let message = "Hello Subhalekha Photography,%0A%0AI want quotation for:%0A";
+
+  let total = 0;
+
+  services.forEach((s, i) => {
+    if (quantities[i] > 0) {
+      let amount = s.price * quantities[i];
+      message += `${s.name} x ${quantities[i]} = ₹${amount}%0A`;
+      total += amount;
+    }
+  });
+
+  let sheets = parseInt(document.getElementById("albumSelect").value);
+  if (sheets > 0) {
+    let albumTotal = sheets * albumPricePerSheet;
+    message += `Album (${sheets} sheets) = ₹${albumTotal}%0A`;
+    total += albumTotal;
+  }
+
+  message += `%0ATotal: ₹${total}`;
+
+  let phone = "919000123849"; // YOUR NUMBER
+
+  let url = `https://wa.me/${phone}?text=${message}`;
+
+  window.open(url, "_blank");
+}
+</script></body>
+</html>
